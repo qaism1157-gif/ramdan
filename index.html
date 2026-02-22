@@ -22,7 +22,6 @@
             overflow-x: hidden;
         }
 
-        /* خلفية متحركة */
         .bg-animation {
             position: fixed;
             width: 100%;
@@ -62,7 +61,6 @@
             padding: 30px 20px;
         }
 
-        /* الهيدر */
         .header {
             text-align: center;
             margin-bottom: 40px;
@@ -102,7 +100,6 @@
             gap: 8px;
         }
 
-        /* البطاقات */
         .card {
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(20px);
@@ -119,7 +116,6 @@
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
         }
 
-        /* قسم الأسماء */
         .memorial-card {
             background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
             text-align: center;
@@ -168,7 +164,6 @@
             font-style: italic;
         }
 
-        /* مواقيت الصلاة */
         .prayer-times {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -207,7 +202,6 @@
             font-weight: 800;
         }
 
-        /* القرآن */
         .quran-card {
             text-align: center;
             background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,215,0,0.05));
@@ -226,12 +220,32 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
+        .quran-status {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #667eea;
+        }
+
+        .live-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #2ecc71;
+            border-radius: 50%;
+            margin-left: 5px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
         audio {
             width: 100%;
             border-radius: 10px;
         }
 
-        /* الجدول */
         .table-card {
             background: rgba(255, 255, 255, 0.95);
             color: #667eea;
@@ -302,21 +316,15 @@
             background: #f8f9ff;
         }
 
-        /* تمييز الأيام المهمة */
-        tbody tr:first-child {
-            background: linear-gradient(135deg, rgba(255,215,0,0.3), rgba(255,215,0,0.1));
-            font-weight: bold;
-        }
-
+        tbody tr:first-child,
         tbody tr:nth-child(21),
         tbody tr:nth-child(27),
         tbody tr:nth-child(29),
         tbody tr:nth-child(30) {
-            background: linear-gradient(135deg, rgba(102,126,234,0.2), rgba(118,75,162,0.1));
+            background: linear-gradient(135deg, rgba(255,215,0,0.3), rgba(255,215,0,0.1));
             font-weight: bold;
         }
 
-        /* scrollbar */
         .table-wrapper::-webkit-scrollbar {
             width: 8px;
         }
@@ -331,16 +339,6 @@
             border-radius: 10px;
         }
 
-        /* Responsive */
-        @media (max-width: 600px) {
-            .header h1 { font-size: 32px; }
-            .prayer-times { grid-template-columns: 1fr; }
-            .name-item { font-size: 16px; padding: 12px 18px; }
-            table { font-size: 12px; }
-            th, td { padding: 10px 5px; }
-        }
-
-        /* تأثيرات إضافية */
         .glow {
             position: fixed;
             width: 300px;
@@ -360,21 +358,38 @@
             50% { transform: translate(30px, -30px) scale(1.2); }
         }
 
-        /* علامة الأيام الفاضلة */
-        .special-day {
-            color: #764ba2;
-            font-weight: bold;
+        .refresh-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 32px; }
+            .prayer-times { grid-template-columns: 1fr; }
+            .name-item { font-size: 16px; padding: 12px 18px; }
+            table { font-size: 12px; }
+            th, td { padding: 10px 5px; }
         }
     </style>
 </head>
 <body>
-    <!-- خلفية متحركة -->
     <div class="bg-animation"></div>
     <div class="glow"></div>
     <div class="glow"></div>
 
     <div class="container">
-        <!-- الهيدر -->
         <div class="header">
             <h1>رمضان كريم 2026</h1>
             <div class="location">
@@ -383,7 +398,6 @@
             </div>
         </div>
 
-        <!-- قسم الأسماء -->
         <div class="card memorial-card">
             <div class="memorial-title">✨ رحمهم الله وغفر لهم ✨</div>
             
@@ -400,34 +414,47 @@
             </div>
         </div>
 
-        <!-- مواقيت الصلاة -->
         <div class="card">
             <h3 style="text-align: center; font-size: 22px; margin-bottom: 10px;">🕐 اليوم الأول من رمضان</h3>
             <div class="prayer-times">
                 <div class="prayer-card">
                     <div class="prayer-icon">🌙</div>
                     <div class="prayer-label">الفجر</div>
-                    <div class="prayer-time">04:48</div>
+                    <div class="prayer-time" id="fajr-time">04:48</div>
                 </div>
                 <div class="prayer-card">
                     <div class="prayer-icon">☀️</div>
                     <div class="prayer-label">المغرب</div>
-                    <div class="prayer-time">17:20</div>
+                    <div class="prayer-time" id="maghrib-time">17:20</div>
                 </div>
             </div>
         </div>
 
-        <!-- القرآن -->
+        <!-- ✅ قسم القرآن 24 ساعة -->
         <div class="card quran-card">
-            <div class="quran-title">📖 القرآن الكريم</div>
+            <div class="quran-title">
+                📖 القرآن الكريم مباشر 24 ساعة
+                <span class="live-indicator"></span>
+            </div>
             <div class="quran-player">
-                <audio controls autoplay>
+                <!-- مشغل الصوت -->
+                <audio controls autoplay id="quran-audio">
                     <source src="https://server7.mp3quran.net/rotana/rotana.m3u8" type="audio/mpeg">
+                    <source src="https://live.qurankarim.org/live" type="audio/mpeg">
+                    <source src="https://radio.islamway.net/live" type="audio/mpeg">
                 </audio>
+                <div class="quran-status">
+                    🔴 بث مباشر • قرآن كريم 24 ساعة
+                </div>
+                <!-- أزرار تبديل المحطات -->
+                <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <button class="refresh-btn" onclick="changeStation('https://server7.mp3quran.net/rotana/rotana.m3u8')">📻 محطة 1</button>
+                    <button class="refresh-btn" onclick="changeStation('https://live.qurankarim.org/live')">📻 محطة 2</button>
+                    <button class="refresh-btn" onclick="changeStation('https://radio.islamway.net/live')">📻 محطة 3</button>
+                </div>
             </div>
         </div>
 
-        <!-- الجدول -->
         <div class="card table-card">
             <div class="table-title">📅 إمساكية رمضان الكاملة</div>
             <div class="table-info">
@@ -448,80 +475,129 @@
                     </tbody>
                 </table>
             </div>
+            <button class="refresh-btn" onclick="loadImsakiya()" style="width: 100%; margin-top: 15px;">
+                🔄 إعادة تحميل البيانات
+            </button>
         </div>
     </div>
 
     <script>
-        // جلب البيانات من شهرين (فبراير ومارس)
+        // تغيير محطة القرآن
+        function changeStation(url) {
+            const audio = document.getElementById('quran-audio');
+            audio.src = url;
+            audio.play();
+        }
+
+        // بيانات احتياطية في حال فشل API
+        const fallbackData = [
+            { day: 1, date: '19/2', fajr: '04:48', maghrib: '17:20' },
+            { day: 2, date: '20/2', fajr: '04:47', maghrib: '17:21' },
+            { day: 3, date: '21/2', fajr: '04:46', maghrib: '17:22' },
+            { day: 4, date: '22/2', fajr: '04:45', maghrib: '17:23' },
+            { day: 5, date: '23/2', fajr: '04:44', maghrib: '17:23' },
+            { day: 6, date: '24/2', fajr: '04:42', maghrib: '17:24' },
+            { day: 7, date: '25/2', fajr: '04:41', maghrib: '17:25' },
+            { day: 8, date: '26/2', fajr: '04:40', maghrib: '17:26' },
+            { day: 9, date: '27/2', fajr: '04:39', maghrib: '17:27' },
+            { day: 10, date: '28/2', fajr: '04:38', maghrib: '17:28' },
+            { day: 11, date: '1/3', fajr: '04:36', maghrib: '17:29' },
+            { day: 12, date: '2/3', fajr: '04:35', maghrib: '17:30' },
+            { day: 13, date: '3/3', fajr: '04:33', maghrib: '17:31' },
+            { day: 14, date: '4/3', fajr: '04:32', maghrib: '17:32' },
+            { day: 15, date: '5/3', fajr: '04:30', maghrib: '17:33' },
+            { day: 16, date: '6/3', fajr: '04:29', maghrib: '17:34' },
+            { day: 17, date: '7/3', fajr: '04:27', maghrib: '17:35' },
+            { day: 18, date: '8/3', fajr: '04:26', maghrib: '17:36' },
+            { day: 19, date: '9/3', fajr: '04:24', maghrib: '17:36' },
+            { day: 20, date: '10/3', fajr: '04:23', maghrib: '17:37' },
+            { day: 21, date: '11/3', fajr: '04:21', maghrib: '17:38' },
+            { day: 22, date: '12/3', fajr: '04:20', maghrib: '17:39' },
+            { day: 23, date: '13/3', fajr: '04:18', maghrib: '17:40' },
+            { day: 24, date: '14/3', fajr: '04:17', maghrib: '17:41' },
+            { day: 25, date: '15/3', fajr: '04:15', maghrib: '17:42' },
+            { day: 26, date: '16/3', fajr: '04:14', maghrib: '17:42' },
+            { day: 27, date: '17/3', fajr: '04:12', maghrib: '17:43' },
+            { day: 28, date: '18/3', fajr: '04:11', maghrib: '17:44' },
+            { day: 29, date: '19/3', fajr: '04:09', maghrib: '17:45' },
+            { day: 30, date: '20/3', fajr: '04:08', maghrib: '17:46' }
+        ];
+
+        // جلب الإمساكية مع بيانات احتياطية
         async function loadImsakiya() {
+            const tbody = document.getElementById('imsakiya-body');
+            tbody.innerHTML = '<tr><td colspan="4">🔄 جاري التحميل...</td></tr>';
+
             try {
-                // جلب بيانات فبراير 2026
-                const febRes = await fetch('https://api.aladhan.com/v1/timingsByMonth/2026/2?city=Homs&country=Syria&method=2');
-                const febData = await febRes.json();
+                // محاولة جلب من API أول
+                const res = await fetch('https://api.aladhan.com/v1/timingsByMonth/2026/2?city=Homs&country=Syria&method=2');
                 
-                // جلب بيانات مارس 2026
+                if (!res.ok) throw new Error('API Error');
+                
+                const data = await res.json();
+                
+                if (!data.data || data.data.length === 0) throw new Error('No Data');
+
+                const febTimings = data.data;
+                
+                // جلب مارس
                 const marRes = await fetch('https://api.aladhan.com/v1/timingsByMonth/2026/3?city=Homs&country=Syria&method=2');
                 const marData = await marRes.json();
-                
-                const febTimings = febData.data;
                 const marTimings = marData.data;
-                
+
                 let rows = '';
                 let ramadanDay = 1;
-                
-                // رمضان يبدأ من 19 فبراير 2026 (اليوم 19 في فبراير)
-                // فبراير: من يوم 19 إلى 28 (10 أيام)
+
+                // فبراير
                 for (let i = 18; i < febTimings.length && ramadanDay <= 30; i++) {
                     if (febTimings[i]) {
                         const date = `${febTimings[i].date.gregorian.day}/${febTimings[i].date.gregorian.month}`;
                         const fajr = febTimings[i].timings.Fajr;
                         const maghrib = febTimings[i].timings.Maghrib;
                         
-                        let specialClass = '';
-                        if (ramadanDay === 1) specialClass = 'special-day';
-                        if (ramadanDay === 21 || ramadanDay === 27 || ramadanDay === 29 || ramadanDay === 30) specialClass = 'special-day';
-                        
-                        rows += `
-                            <tr class="${specialClass}">
-                                <td><strong>${ramadanDay}</strong></td>
-                                <td>${date}/2026</td>
-                                <td>${fajr}</td>
-                                <td>${maghrib}</td>
-                            </tr>
-                        `;
+                        rows += `<tr><td><strong>${ramadanDay}</strong></td><td>${date}/2026</td><td>${fajr}</td><td>${maghrib}</td></tr>`;
                         ramadanDay++;
                     }
                 }
-                
-                // مارس: بقية أيام رمضان (20 يوم)
+
+                // مارس
                 for (let i = 0; i < marTimings.length && ramadanDay <= 30; i++) {
                     if (marTimings[i]) {
                         const date = `${marTimings[i].date.gregorian.day}/${marTimings[i].date.gregorian.month}`;
                         const fajr = marTimings[i].timings.Fajr;
                         const maghrib = marTimings[i].timings.Maghrib;
                         
-                        let specialClass = '';
-                        if (ramadanDay === 21 || ramadanDay === 27 || ramadanDay === 29 || ramadanDay === 30) specialClass = 'special-day';
-                        
-                        rows += `
-                            <tr class="${specialClass}">
-                                <td><strong>${ramadanDay}</strong></td>
-                                <td>${date}/2026</td>
-                                <td>${fajr}</td>
-                                <td>${maghrib}</td>
-                            </tr>
-                        `;
+                        rows += `<tr><td><strong>${ramadanDay}</strong></td><td>${date}/2026</td><td>${fajr}</td><td>${maghrib}</td></tr>`;
                         ramadanDay++;
                     }
                 }
-                
-                document.getElementById('imsakiya-body').innerHTML = rows;
+
+                tbody.innerHTML = rows;
+
+                // تحديث أوقات اليوم الأول
+                if (febTimings[18]) {
+                    document.getElementById('fajr-time').textContent = febTimings[18].timings.Fajr;
+                    document.getElementById('maghrib-time').textContent = febTimings[18].timings.Maghrib;
+                }
+
             } catch (err) {
-                console.error('Error:', err);
-                document.getElementById('imsakiya-body').innerHTML = 
-                    '<tr><td colspan="4">تعذر تحميل البيانات</td></tr>';
+                console.log('Using fallback data:', err);
+                
+                // استخدام البيانات الاحتياطية
+                let rows = '';
+                fallbackData.forEach(item => {
+                    rows += `<tr><td><strong>${item.day}</strong></td><td>${item.date}/2026</td><td>${item.fajr}</td><td>${item.maghrib}</td></tr>`;
+                });
+                
+                tbody.innerHTML = rows;
+                
+                // تحديث الأوقات
+                document.getElementById('fajr-time').textContent = fallbackData[0].fajr;
+                document.getElementById('maghrib-time').textContent = fallbackData[0].maghrib;
             }
         }
+
+        // تحميل عند فتح الصفحة
         loadImsakiya();
     </script>
 </body>
