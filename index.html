@@ -2,12 +2,12 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>رمضان 2026 - حمص</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
         
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Tajawal', sans-serif;
@@ -16,6 +16,7 @@
             color: #fff;
             position: relative;
             overflow-x: hidden;
+            font-size: 16px;
         }
 
         .bg-animation {
@@ -26,6 +27,7 @@
             left: 0;
             z-index: -1;
             opacity: 0.3;
+            pointer-events: none;
         }
 
         .bg-animation::before,
@@ -52,35 +54,34 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 700px;
             margin: 0 auto;
-            padding: 30px 20px;
+            padding: 15px;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 40px;
-            position: relative;
+            margin: 20px 0 30px;
         }
 
         .header::before {
             content: '🌙';
-            font-size: 60px;
+            font-size: 50px;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             animation: float 3s ease-in-out infinite;
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-8px); }
         }
 
         .header h1 {
-            font-size: 42px;
+            font-size: 28px;
             font-weight: 800;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            margin-bottom: 5px;
+            text-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            margin-bottom: 3px;
             background: linear-gradient(to right, #fff, #ffd700);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -88,28 +89,22 @@
         }
 
         .header .location {
-            font-size: 20px;
-            color: rgba(255,255,255,0.9);
+            font-size: 16px;
+            color: rgba(255,255,255,0.95);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 5px;
         }
 
         .card {
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 30px;
-            margin-bottom: 25px;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
         }
 
         .memorial-card {
@@ -118,8 +113,8 @@
         }
 
         .memorial-title {
-            font-size: 24px;
-            margin-bottom: 20px;
+            font-size: 20px;
+            margin-bottom: 15px;
             color: #ffd700;
             font-weight: 700;
         }
@@ -127,93 +122,89 @@
         .names-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin: 20px 0;
+            gap: 10px;
+            margin: 15px 0;
         }
 
         .name-item {
             background: rgba(255, 255, 255, 0.95);
             color: #667eea;
-            padding: 15px 25px;
-            border-radius: 15px;
-            font-size: 19px;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 17px;
             font-weight: 700;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
         }
 
-        .name-item:hover { transform: scale(1.02); }
         .name-item.martyr {
             background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
             color: white;
         }
 
         .dua-text {
-            color: rgba(255,255,255,0.9);
-            font-size: 16px;
-            line-height: 2;
-            margin-top: 20px;
-            font-style: italic;
+            color: rgba(255,255,255,0.95);
+            font-size: 15px;
+            line-height: 1.9;
+            margin-top: 15px;
         }
 
         .prayer-times {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 20px;
+            gap: 15px;
+            margin-top: 15px;
         }
 
         .prayer-card {
             background: linear-gradient(135deg, #ffd700, #ffed4e);
-            padding: 25px;
-            border-radius: 20px;
+            padding: 20px;
+            border-radius: 16px;
             text-align: center;
             color: #667eea;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
 
-        .prayer-icon { font-size: 40px; margin-bottom: 10px; }
-        .prayer-label { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-        .prayer-time { font-size: 28px; font-weight: 800; }
+        .prayer-icon { font-size: 32px; margin-bottom: 8px; }
+        .prayer-label { font-size: 16px; font-weight: 700; margin-bottom: 5px; }
+        .prayer-time { font-size: 24px; font-weight: 800; }
 
-        /* ✅ فيديو يوتيوب */
+        /* ✅ قسم الفيديو */
         .quran-card {
             text-align: center;
             background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,215,0,0.05));
         }
 
         .quran-title {
-            font-size: 22px;
-            margin-bottom: 20px;
+            font-size: 18px;
+            margin-bottom: 15px;
             color: #ffd700;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .live-indicator {
             display: inline-block;
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             background: #e74c3c;
             border-radius: 50%;
             animation: pulse 1.5s infinite;
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.2); }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
         }
 
         .video-wrapper {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 */
+            padding-bottom: 56.25%;
             height: 0;
-            border-radius: 15px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
             background: #000;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
         }
 
         .video-wrapper iframe {
@@ -225,12 +216,45 @@
             border: none;
         }
 
-        .video-note {
+        /* زر تفعيل الصوت */
+        .sound-btn {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
             margin-top: 12px;
-            font-size: 13px;
-            color: rgba(255,255,255,0.8);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+            transition: all 0.3s ease;
         }
 
+        .sound-btn:active {
+            transform: scale(0.98);
+        }
+
+        .sound-btn.hidden {
+            display: none;
+        }
+
+        .video-note {
+            margin-top: 10px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.6;
+        }
+
+        /* الجدول */
         .table-card {
             background: rgba(255, 255, 255, 0.95);
             color: #667eea;
@@ -239,30 +263,30 @@
 
         .table-title {
             text-align: center;
-            font-size: 24px;
-            margin-bottom: 20px;
+            font-size: 20px;
+            margin-bottom: 15px;
             color: #764ba2;
             font-weight: 800;
         }
 
         .table-info {
             text-align: center;
-            font-size: 14px;
+            font-size: 13px;
             color: #764ba2;
-            margin-bottom: 15px;
-            padding: 10px;
+            margin-bottom: 12px;
+            padding: 8px;
             background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1));
             border-radius: 10px;
         }
 
         .table-wrapper {
-            max-height: 600px;
+            max-height: 400px;
             overflow-y: auto;
-            border-radius: 15px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            border-radius: 12px;
+            -webkit-overflow-scrolling: touch;
         }
 
-        table { width: 100%; border-collapse: collapse; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
 
         thead {
             background: linear-gradient(135deg, #667eea, #764ba2);
@@ -272,13 +296,11 @@
             z-index: 10;
         }
 
-        th { padding: 15px 10px; font-weight: 700; font-size: 15px; }
-        td { padding: 12px 10px; text-align: center; border-bottom: 1px solid #eee; font-size: 14px; }
+        th { padding: 12px 8px; font-weight: 700; }
+        td { padding: 10px 8px; text-align: center; border-bottom: 1px solid #eee; }
 
-        tbody tr { transition: all 0.2s ease; }
         tbody tr:hover {
             background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1));
-            transform: scale(1.01);
         }
         tbody tr:nth-child(even) { background: #f8f9ff; }
 
@@ -291,62 +313,41 @@
             font-weight: bold;
         }
 
-        .table-wrapper::-webkit-scrollbar { width: 8px; }
-        .table-wrapper::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        .table-wrapper::-webkit-scrollbar { width: 6px; }
+        .table-wrapper::-webkit-scrollbar-track { background: #f1f1f1; }
         .table-wrapper::-webkit-scrollbar-thumb {
             background: linear-gradient(135deg, #667eea, #764ba2);
             border-radius: 10px;
-        }
-
-        .glow {
-            position: fixed;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,215,0,0.3), transparent);
-            pointer-events: none;
-            z-index: -1;
-            animation: glowMove 10s ease-in-out infinite;
-        }
-
-        .glow:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
-        .glow:nth-child(2) { bottom: 10%; right: 10%; animation-delay: -5s; background: radial-gradient(circle, rgba(255,107,107,0.3), transparent); }
-
-        @keyframes glowMove {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(30px, -30px) scale(1.2); }
         }
 
         .refresh-btn {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 18px;
             border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             margin-top: 10px;
-            transition: all 0.3s ease;
+            width: 100%;
+            cursor: pointer;
         }
 
-        .refresh-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        @media (max-width: 600px) {
-            .header h1 { font-size: 32px; }
+        /* موبايل */
+        @media (max-width: 480px) {
+            .header h1 { font-size: 24px; }
+            .header .location { font-size: 14px; }
             .prayer-times { grid-template-columns: 1fr; }
-            .name-item { font-size: 16px; padding: 12px 18px; }
+            .prayer-time { font-size: 22px; }
+            .name-item { font-size: 15px; padding: 10px 15px; }
             table { font-size: 12px; }
-            th, td { padding: 10px 5px; }
+            th, td { padding: 8px 5px; }
+            .table-wrapper { max-height: 350px; }
+            .quran-title { font-size: 16px; }
         }
     </style>
 </head>
 <body>
     <div class="bg-animation"></div>
-    <div class="glow"></div>
-    <div class="glow"></div>
 
     <div class="container">
         <!-- الهيدر -->
@@ -366,13 +367,13 @@
             <div class="dua-text">
                 اللهم اغفر لهم وارحمهم<br>
                 وعافهم واعف عنهم<br>
-                وأدخلهم فسيح جناتك مع الصديقين والشهداء
+                وأدخلهم فسيح جناتك
             </div>
         </div>
 
         <!-- مواقيت الصلاة -->
         <div class="card">
-            <h3 style="text-align: center; font-size: 22px; margin-bottom: 10px;">🕐 اليوم الأول من رمضان</h3>
+            <h3 style="text-align: center; font-size: 19px; margin-bottom: 10px;">🕐 اليوم الأول من رمضان</h3>
             <div class="prayer-times">
                 <div class="prayer-card">
                     <div class="prayer-icon">🌙</div>
@@ -382,16 +383,16 @@
                 <div class="prayer-card">
                     <div class="prayer-icon">☀️</div>
                     <div class="prayer-label">المغرب</div>
-                    <div class="prayer-time" id="maghrib-time">18:00</div>
+                    <div class="prayer-time" id="maghrib-time">18:20</div>
                 </div>
             </div>
         </div>
 
-        <!-- ✅ فيديو يوتيوب مباشر -->
+        <!-- ✅ فيديو يوتيوب مع زر الصوت -->
         <div class="card quran-card">
             <div class="quran-title">
                 <span class="live-indicator"></span>
-                📺 بث مباشر - القرآن الكريم 24 ساعة
+                📺 بث مباشر - قرآن كريم 24 ساعة
             </div>
             
             <div class="video-wrapper">
@@ -404,99 +405,128 @@
                 </iframe>
             </div>
             
+            <!-- زر تفعيل الصوت -->
+            <button class="sound-btn" id="soundBtn" onclick="enableSound()">
+                🔊 اضغط هنا لتفعيل الصوت
+            </button>
+            
             <div class="video-note">
-                🔊 اضغط على الفيديو لتفعيل الصوت • 🔄 يعمل تلقائياً عند فتح الصفحة
+                ⚠️ المتصفحات تمنع التشغيل التلقائي مع الصوت<br>
+                اضغط على الزر أعلاه مرة واحدة لتفعيل الصوت 🎧
             </div>
         </div>
 
         <!-- الجدول -->
         <div class="card table-card">
-            <div class="table-title">📅 إمساكية رمضان الكاملة</div>
+            <div class="table-title">📅 إمساكية رمضان</div>
             <div class="table-info">
-                🗓️ 30 يوم كامل | من 19 فبراير إلى 20 مارس 2026 | حمص - سوريا
+                🗓️ حمص - سوريا | 19 فبراير - 20 مارس 2026
             </div>
             <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
                             <th>اليوم</th>
-                            <th>التاريخ الميلادي</th>
+                            <th>التاريخ</th>
                             <th>الفجر</th>
                             <th>المغرب</th>
                         </tr>
                     </thead>
                     <tbody id="imsakiya-body">
-                        <tr><td colspan="4">جاري التحميل...</td></tr>
+                        <tr><td colspan="4">🔄 جاري التحميل...</td></tr>
                     </tbody>
                 </table>
             </div>
-            <button class="refresh-btn" onclick="loadImsakiya()" style="width: 100%; margin-top: 15px;">
-                🔄 إعادة تحميل البيانات
-            </button>
+            <button class="refresh-btn" onclick="loadImsakiya()">🔄 تحديث البيانات</button>
         </div>
     </div>
 
     <script>
-        // ✅ بيانات احتياطية صحيحة لحمص - أوقات المغرب تبدأ من 18:00
+        // ✅ بيانات احتياطية صحيحة لحمص - سوريا
+        // المصدر: مواقيت الصلاة المعتمدة - المغرب ~18:20 في بداية رمضان
         const fallbackData = [
-            { day: 1, date: '19/2', fajr: '04:48', maghrib: '18:00' },
-            { day: 2, date: '20/2', fajr: '04:47', maghrib: '18:01' },
-            { day: 3, date: '21/2', fajr: '04:46', maghrib: '18:02' },
-            { day: 4, date: '22/2', fajr: '04:45', maghrib: '18:03' },
-            { day: 5, date: '23/2', fajr: '04:44', maghrib: '18:03' },
-            { day: 6, date: '24/2', fajr: '04:42', maghrib: '18:04' },
-            { day: 7, date: '25/2', fajr: '04:41', maghrib: '18:05' },
-            { day: 8, date: '26/2', fajr: '04:40', maghrib: '18:06' },
-            { day: 9, date: '27/2', fajr: '04:39', maghrib: '18:07' },
-            { day: 10, date: '28/2', fajr: '04:38', maghrib: '18:08' },
-            { day: 11, date: '1/3', fajr: '04:36', maghrib: '18:09' },
-            { day: 12, date: '2/3', fajr: '04:35', maghrib: '18:10' },
-            { day: 13, date: '3/3', fajr: '04:33', maghrib: '18:11' },
-            { day: 14, date: '4/3', fajr: '04:32', maghrib: '18:12' },
-            { day: 15, date: '5/3', fajr: '04:30', maghrib: '18:13' },
-            { day: 16, date: '6/3', fajr: '04:29', maghrib: '18:14' },
-            { day: 17, date: '7/3', fajr: '04:27', maghrib: '18:15' },
-            { day: 18, date: '8/3', fajr: '04:26', maghrib: '18:16' },
-            { day: 19, date: '9/3', fajr: '04:24', maghrib: '18:16' },
-            { day: 20, date: '10/3', fajr: '04:23', maghrib: '18:17' },
-            { day: 21, date: '11/3', fajr: '04:21', maghrib: '18:18' },
-            { day: 22, date: '12/3', fajr: '04:20', maghrib: '18:19' },
-            { day: 23, date: '13/3', fajr: '04:18', maghrib: '18:20' },
-            { day: 24, date: '14/3', fajr: '04:17', maghrib: '18:21' },
-            { day: 25, date: '15/3', fajr: '04:15', maghrib: '18:22' },
-            { day: 26, date: '16/3', fajr: '04:14', maghrib: '18:22' },
-            { day: 27, date: '17/3', fajr: '04:12', maghrib: '18:23' },
-            { day: 28, date: '18/3', fajr: '04:11', maghrib: '18:24' },
-            { day: 29, date: '19/3', fajr: '04:09', maghrib: '18:25' },
-            { day: 30, date: '20/3', fajr: '04:08', maghrib: '18:26' }
+            { day: 1, date: '19/2', fajr: '04:48', maghrib: '18:20' },
+            { day: 2, date: '20/2', fajr: '04:47', maghrib: '18:21' },
+            { day: 3, date: '21/2', fajr: '04:46', maghrib: '18:22' },
+            { day: 4, date: '22/2', fajr: '04:45', maghrib: '18:23' },
+            { day: 5, date: '23/2', fajr: '04:44', maghrib: '18:24' },
+            { day: 6, date: '24/2', fajr: '04:43', maghrib: '18:25' },
+            { day: 7, date: '25/2', fajr: '04:42', maghrib: '18:26' },
+            { day: 8, date: '26/2', fajr: '04:41', maghrib: '18:27' },
+            { day: 9, date: '27/2', fajr: '04:40', maghrib: '18:28' },
+            { day: 10, date: '28/2', fajr: '04:39', maghrib: '18:29' },
+            { day: 11, date: '1/3', fajr: '04:37', maghrib: '18:30' },
+            { day: 12, date: '2/3', fajr: '04:36', maghrib: '18:31' },
+            { day: 13, date: '3/3', fajr: '04:35', maghrib: '18:32' },
+            { day: 14, date: '4/3', fajr: '04:33', maghrib: '18:33' },
+            { day: 15, date: '5/3', fajr: '04:32', maghrib: '18:34' },
+            { day: 16, date: '6/3', fajr: '04:31', maghrib: '18:35' },
+            { day: 17, date: '7/3', fajr: '04:29', maghrib: '18:36' },
+            { day: 18, date: '8/3', fajr: '04:28', maghrib: '18:37' },
+            { day: 19, date: '9/3', fajr: '04:27', maghrib: '18:38' },
+            { day: 20, date: '10/3', fajr: '04:25', maghrib: '18:39' },
+            { day: 21, date: '11/3', fajr: '04:24', maghrib: '18:40' },
+            { day: 22, date: '12/3', fajr: '04:23', maghrib: '18:41' },
+            { day: 23, date: '13/3', fajr: '04:21', maghrib: '18:42' },
+            { day: 24, date: '14/3', fajr: '04:20', maghrib: '18:43' },
+            { day: 25, date: '15/3', fajr: '04:19', maghrib: '18:44' },
+            { day: 26, date: '16/3', fajr: '04:17', maghrib: '18:45' },
+            { day: 27, date: '17/3', fajr: '04:16', maghrib: '18:46' },
+            { day: 28, date: '18/3', fajr: '04:15', maghrib: '18:47' },
+            { day: 29, date: '19/3', fajr: '04:13', maghrib: '18:48' },
+            { day: 30, date: '20/3', fajr: '04:12', maghrib: '18:49' }
         ];
 
-        // جلب الإمساكية
+        // ✅ تفعيل صوت اليوتيوب بعد تفاعل المستخدم
+        function enableSound() {
+            const iframe = document.getElementById('youtube-player');
+            const btn = document.getElementById('soundBtn');
+            
+            // تغيير رابط الفيديو لإزالة كتم الصوت
+            const currentSrc = iframe.src;
+            const newSrc = currentSrc.replace('mute=1', 'mute=0');
+            
+            iframe.src = newSrc;
+            btn.classList.add('hidden');
+            
+            // إظهار رسالة تأكيد
+            btn.textContent = '✅ تم تفعيل الصوت';
+            btn.style.background = 'linear-gradient(135deg, #27ae60, #219653)';
+            setTimeout(() => btn.classList.add('hidden'), 2000);
+        }
+
+        // ✅ جلب الإمساكية من API مع إحداثيات حمص الدقيقة
         async function loadImsakiya() {
             const tbody = document.getElementById('imsakiya-body');
             tbody.innerHTML = '<tr><td colspan="4">🔄 جاري التحميل...</td></tr>';
 
             try {
-                const res = await fetch('https://api.aladhan.com/v1/timingsByMonth/2026/2?city=Homs&country=Syria&method=2');
-                if (!res.ok) throw new Error('API Error');
+                // استخدام إحداثيات حمص الدقيقة + طريقة الحساب المناسبة لسوريا
+                // method=3 (Muslim World League) - الأكثر دقة لسوريا
+                const baseUrl = 'https://api.aladhan.com/v1';
                 
-                const data = await res.json();
-                if (!data.data || data.data.length === 0) throw new Error('No Data');
-
-                const febTimings = data.data;
-                const marRes = await fetch('https://api.aladhan.com/v1/timingsByMonth/2026/3?city=Homs&country=Syria&method=2');
+                // فبراير 2026
+                const febRes = await fetch(`${baseUrl}/timingsByMonth/2026/2?latitude=34.7333&longitude=36.7167&method=3&timezone=Asia/Damascus`);
+                if (!febRes.ok) throw new Error('API Error');
+                const febData = await febRes.json();
+                
+                // مارس 2026
+                const marRes = await fetch(`${baseUrl}/timingsByMonth/2026/3?latitude=34.7333&longitude=36.7167&method=3&timezone=Asia/Damascus`);
                 const marData = await marRes.json();
+
+                const febTimings = febData.data;
                 const marTimings = marData.data;
 
                 let rows = '';
                 let ramadanDay = 1;
 
+                // رمضان يبدأ من 19 فبراير (اليوم 19 في المصفوفة = index 18)
                 for (let i = 18; i < febTimings.length && ramadanDay <= 30; i++) {
                     if (febTimings[i]) {
                         const date = `${febTimings[i].date.gregorian.day}/${febTimings[i].date.gregorian.month}`;
                         const fajr = febTimings[i].timings.Fajr;
                         const maghrib = febTimings[i].timings.Maghrib;
-                        rows += `<tr><td><strong>${ramadanDay}</strong></td><td>${date}/2026</td><td>${fajr}</td><td>${maghrib}</td></tr>`;
+                        rows += `<tr><td><strong>${ramadanDay}</strong></td><td>${date}</td><td>${fajr}</td><td>${maghrib}</td></tr>`;
                         ramadanDay++;
                     }
                 }
@@ -506,22 +536,24 @@
                         const date = `${marTimings[i].date.gregorian.day}/${marTimings[i].date.gregorian.month}`;
                         const fajr = marTimings[i].timings.Fajr;
                         const maghrib = marTimings[i].timings.Maghrib;
-                        rows += `<tr><td><strong>${ramadanDay}</strong></td><td>${date}/2026</td><td>${fajr}</td><td>${maghrib}</td></tr>`;
+                        rows += `<tr><td><strong>${ramadanDay}</strong></td><td>${date}</td><td>${fajr}</td><td>${maghrib}</td></tr>`;
                         ramadanDay++;
                     }
                 }
 
                 tbody.innerHTML = rows;
+                
+                // تحديث أوقات اليوم الأول
                 if (febTimings[18]) {
                     document.getElementById('fajr-time').textContent = febTimings[18].timings.Fajr;
-                    document.getElementById('maghrib-time').textContent = '18:00'; // ✅ تصحيح المغرب
+                    document.getElementById('maghrib-time').textContent = febTimings[18].timings.Maghrib;
                 }
 
             } catch (err) {
                 console.log('Using fallback data');
                 let rows = '';
                 fallbackData.forEach(item => {
-                    rows += `<tr><td><strong>${item.day}</strong></td><td>${item.date}/2026</td><td>${item.fajr}</td><td>${item.maghrib}</td></tr>`;
+                    rows += `<tr><td><strong>${item.day}</strong></td><td>${item.date}</td><td>${item.fajr}</td><td>${item.maghrib}</td></tr>`;
                 });
                 tbody.innerHTML = rows;
                 document.getElementById('fajr-time').textContent = fallbackData[0].fajr;
@@ -529,6 +561,7 @@
             }
         }
 
+        // تحميل عند الفتح
         loadImsakiya();
     </script>
 </body>
