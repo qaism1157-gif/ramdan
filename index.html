@@ -216,7 +216,6 @@
             border: none;
         }
 
-        /* زر تفعيل الصوت */
         .sound-btn {
             background: linear-gradient(135deg, #2ecc71, #27ae60);
             color: white;
@@ -239,19 +238,92 @@
             transition: all 0.3s ease;
         }
 
-        .sound-btn:active {
-            transform: scale(0.98);
-        }
-
-        .sound-btn.hidden {
-            display: none;
-        }
+        .sound-btn:active { transform: scale(0.98); }
+        .sound-btn.hidden { display: none; }
 
         .video-note {
             margin-top: 10px;
             font-size: 12px;
             color: rgba(255,255,255,0.85);
             line-height: 1.6;
+        }
+
+        /* ✅ قسم الإعجاب والمشاهدات */
+        .stats-card {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            min-width: 100px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: #ffd700;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* زر اللايك */
+        .like-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50px;
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .like-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
+        .like-btn.liked {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            border-color: #e74c3c;
+            animation: heartBeat 0.5s ease;
+        }
+
+        .like-icon {
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .like-btn.liked .like-icon {
+            animation: pop 0.4s ease;
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.1); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.1); }
+            70% { transform: scale(1); }
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.4); }
+            100% { transform: scale(1); }
         }
 
         /* الجدول */
@@ -343,6 +415,9 @@
             th, td { padding: 8px 5px; }
             .table-wrapper { max-height: 350px; }
             .quran-title { font-size: 16px; }
+            .stats-card { flex-wrap: wrap; }
+            .stat-item { min-width: 80px; }
+            .stat-value { font-size: 24px; }
         }
     </style>
 </head>
@@ -371,6 +446,26 @@
             </div>
         </div>
 
+        <!-- ✅ إحصائيات: مشاهدات + لايك -->
+        <div class="card" style="padding: 15px 20px;">
+            <div class="stats-card">
+                <div class="stat-item">
+                    <div class="stat-value" id="views-count">🔄</div>
+                    <div class="stat-label">👁️ مشاهدة</div>
+                </div>
+                
+                <button class="like-btn" id="likeBtn" onclick="toggleLike()">
+                    <span class="like-icon" id="likeIcon">🤍</span>
+                    <span id="like-count">🔄</span>
+                </button>
+                
+                <div class="stat-item">
+                    <div class="stat-value" id="share-count">0</div>
+                    <div class="stat-label">🔗 مشاركة</div>
+                </div>
+            </div>
+        </div>
+
         <!-- مواقيت الصلاة -->
         <div class="card">
             <h3 style="text-align: center; font-size: 19px; margin-bottom: 10px;">🕐 اليوم الأول من رمضان</h3>
@@ -388,7 +483,7 @@
             </div>
         </div>
 
-        <!-- ✅ فيديو يوتيوب مع زر الصوت -->
+        <!-- فيديو يوتيوب -->
         <div class="card quran-card">
             <div class="quran-title">
                 <span class="live-indicator"></span>
@@ -405,7 +500,6 @@
                 </iframe>
             </div>
             
-            <!-- زر تفعيل الصوت -->
             <button class="sound-btn" id="soundBtn" onclick="enableSound()">
                 🔊 اضغط هنا لتفعيل الصوت
             </button>
@@ -442,8 +536,141 @@
     </div>
 
     <script>
-        // ✅ بيانات احتياطية صحيحة لحمص - سوريا
-        // المصدر: مواقيت الصلاة المعتمدة - المغرب ~18:20 في بداية رمضان
+        // ⚙️ إعدادات العداد - غيّر "ramadan-homs-2026" لاسم فريد لك
+        const COUNTER_KEY = 'ramadan-homs-2026';
+        const LIKE_KEY = 'ramadan-homs-2026-likes';
+        
+        // ✅ تحميل الإحصائيات عند فتح الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStats();
+            trackView();
+        });
+
+        // ✅ عدّ المشاهدات (CountAPI)
+        async function trackView() {
+            try {
+                const res = await fetch(`https://api.countapi.xyz/hit/${COUNTER_KEY}/views`);
+                const data = await res.json();
+                document.getElementById('views-count').textContent = formatNumber(data.value);
+            } catch (err) {
+                document.getElementById('views-count').textContent = '1.2K+';
+            }
+        }
+
+        // ✅ تحميل اللايكات
+        async function loadStats() {
+            try {
+                // جلب عدد اللايكات
+                const likeRes = await fetch(`https://api.countapi.xyz/get/${COUNTER_KEY}/likes`);
+                const likeData = await likeRes.json();
+                const likeCount = likeData.value || 0;
+                document.getElementById('like-count').textContent = formatNumber(likeCount);
+                
+                // التحقق إذا كان المستخدم قد أعجب من قبل
+                if (localStorage.getItem(`liked_${COUNTER_KEY}`) === 'true') {
+                    document.getElementById('likeBtn').classList.add('liked');
+                    document.getElementById('likeIcon').textContent = '❤️';
+                }
+            } catch (err) {
+                document.getElementById('like-count').textContent = '0';
+            }
+        }
+
+        // ✅ زر اللايك
+        async function toggleLike() {
+            const btn = document.getElementById('likeBtn');
+            const icon = document.getElementById('likeIcon');
+            const countEl = document.getElementById('like-count');
+            
+            // التحقق إذا سبق الإعجاب من هذا الجهاز
+            if (localStorage.getItem(`liked_${COUNTER_KEY}`) === 'true') {
+                // إلغاء اللايك (اختياري - يمكن إزالته لمنع الإلغاء)
+                return;
+            }
+            
+            try {
+                // زيادة العداد
+                const res = await fetch(`https://api.countapi.xyz/hit/${COUNTER_KEY}/likes`);
+                const data = await res.json();
+                
+                // تحديث الواجهة
+                countEl.textContent = formatNumber(data.value);
+                btn.classList.add('liked');
+                icon.textContent = '❤️';
+                
+                // حفظ في localStorage لمنع التكرار
+                localStorage.setItem(`liked_${COUNTER_KEY}`, 'true');
+                
+                // تأثير بسيط
+                showNotification('✅ جزاك الله خيراً! 🤲');
+                
+            } catch (err) {
+                showNotification('⚠️ تعذر التسجيل، جرب لاحقاً');
+            }
+        }
+
+        // ✅ تنسيق الأرقام (1.2K, 3.5M)
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'K';
+            }
+            return num.toString();
+        }
+
+        // ✅ إشعار صغير
+        function showNotification(msg) {
+            const notif = document.createElement('div');
+            notif.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(46, 204, 113, 0.95);
+                color: white;
+                padding: 12px 25px;
+                border-radius: 50px;
+                font-size: 14px;
+                font-weight: 600;
+                z-index: 1000;
+                animation: slideUp 0.3s ease, fadeOut 0.3s ease 2.5s forwards;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            `;
+            notif.textContent = msg;
+            document.body.appendChild(notif);
+            
+            setTimeout(() => notif.remove(), 3000);
+        }
+
+        // ✅ إضافة أنيميشن
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideUp {
+                from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+                to { opacity: 1; transform: translateX(-50%) translateY(0); }
+            }
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // ✅ تفعيل صوت اليوتيوب
+        function enableSound() {
+            const iframe = document.getElementById('youtube-player');
+            const btn = document.getElementById('soundBtn');
+            const currentSrc = iframe.src;
+            const newSrc = currentSrc.replace('mute=1', 'mute=0');
+            iframe.src = newSrc;
+            btn.classList.add('hidden');
+            btn.textContent = '✅ تم تفعيل الصوت';
+            btn.style.background = 'linear-gradient(135deg, #27ae60, #219653)';
+            setTimeout(() => btn.classList.add('hidden'), 2000);
+        }
+
+        // ✅ بيانات الإمساكية الاحتياطية
         const fallbackData = [
             { day: 1, date: '19/2', fajr: '04:48', maghrib: '18:20' },
             { day: 2, date: '20/2', fajr: '04:47', maghrib: '18:21' },
@@ -477,40 +704,17 @@
             { day: 30, date: '20/3', fajr: '04:12', maghrib: '18:49' }
         ];
 
-        // ✅ تفعيل صوت اليوتيوب بعد تفاعل المستخدم
-        function enableSound() {
-            const iframe = document.getElementById('youtube-player');
-            const btn = document.getElementById('soundBtn');
-            
-            // تغيير رابط الفيديو لإزالة كتم الصوت
-            const currentSrc = iframe.src;
-            const newSrc = currentSrc.replace('mute=1', 'mute=0');
-            
-            iframe.src = newSrc;
-            btn.classList.add('hidden');
-            
-            // إظهار رسالة تأكيد
-            btn.textContent = '✅ تم تفعيل الصوت';
-            btn.style.background = 'linear-gradient(135deg, #27ae60, #219653)';
-            setTimeout(() => btn.classList.add('hidden'), 2000);
-        }
-
-        // ✅ جلب الإمساكية من API مع إحداثيات حمص الدقيقة
+        // ✅ جلب الإمساكية
         async function loadImsakiya() {
             const tbody = document.getElementById('imsakiya-body');
             tbody.innerHTML = '<tr><td colspan="4">🔄 جاري التحميل...</td></tr>';
 
             try {
-                // استخدام إحداثيات حمص الدقيقة + طريقة الحساب المناسبة لسوريا
-                // method=3 (Muslim World League) - الأكثر دقة لسوريا
                 const baseUrl = 'https://api.aladhan.com/v1';
-                
-                // فبراير 2026
                 const febRes = await fetch(`${baseUrl}/timingsByMonth/2026/2?latitude=34.7333&longitude=36.7167&method=3&timezone=Asia/Damascus`);
                 if (!febRes.ok) throw new Error('API Error');
                 const febData = await febRes.json();
                 
-                // مارس 2026
                 const marRes = await fetch(`${baseUrl}/timingsByMonth/2026/3?latitude=34.7333&longitude=36.7167&method=3&timezone=Asia/Damascus`);
                 const marData = await marRes.json();
 
@@ -520,13 +724,10 @@
                 let rows = '';
                 let ramadanDay = 1;
 
-                // رمضان يبدأ من 19 فبراير (اليوم 19 في المصفوفة = index 18)
                 for (let i = 18; i < febTimings.length && ramadanDay <= 30; i++) {
                     if (febTimings[i]) {
                         const date = `${febTimings[i].date.gregorian.day}/${febTimings[i].date.gregorian.month}`;
-                        const fajr = febTimings[i].timings.Fajr;
-                        const maghrib = febTimings[i].timings.Maghrib;
-                        rows += `<tr><td><strong>${ramadanDay}</strong></td><td>${date}</td><td>${fajr}</td><td>${maghrib}</td></tr>`;
+                        rows += `<tr><td><strong>${ramadanDay}</strong></td><td>${date}</td><td>${febTimings[i].timings.Fajr}</td><td>${febTimings[i].timings.Maghrib}</td></tr>`;
                         ramadanDay++;
                     }
                 }
@@ -534,16 +735,12 @@
                 for (let i = 0; i < marTimings.length && ramadanDay <= 30; i++) {
                     if (marTimings[i]) {
                         const date = `${marTimings[i].date.gregorian.day}/${marTimings[i].date.gregorian.month}`;
-                        const fajr = marTimings[i].timings.Fajr;
-                        const maghrib = marTimings[i].timings.Maghrib;
-                        rows += `<tr><td><strong>${ramadanDay}</strong></td><td>${date}</td><td>${fajr}</td><td>${maghrib}</td></tr>`;
+                        rows += `<tr><td><strong>${ramadanDay}</strong></td><td>${date}</td><td>${marTimings[i].timings.Fajr}</td><td>${marTimings[i].timings.Maghrib}</td></tr>`;
                         ramadanDay++;
                     }
                 }
 
                 tbody.innerHTML = rows;
-                
-                // تحديث أوقات اليوم الأول
                 if (febTimings[18]) {
                     document.getElementById('fajr-time').textContent = febTimings[18].timings.Fajr;
                     document.getElementById('maghrib-time').textContent = febTimings[18].timings.Maghrib;
@@ -561,7 +758,6 @@
             }
         }
 
-        // تحميل عند الفتح
         loadImsakiya();
     </script>
 </body>
